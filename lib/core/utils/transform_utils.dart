@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'dart:ui';
+import 'package:vector_math/vector_math_64.dart';
 
 /// Transform matrix utilities for signature manipulation
 class TransformUtils {
@@ -42,9 +43,8 @@ class TransformUtils {
 
   /// Transform a point using a matrix
   static Offset transformPoint(Matrix4 matrix, Offset point) {
-    final result = matrix.transform3(
-      Vector3(point.dx, point.dy, 0),
-    );
+    final vector = Vector3(point.dx, point.dy, 0);
+    final result = matrix.transform3(vector);
     return Offset(result.x, result.y);
   }
 
@@ -138,28 +138,4 @@ class TransformUtils {
   static double angleBetween(Offset p1, Offset p2) {
     return math.atan2(p2.dy - p1.dy, p2.dx - p1.dx);
   }
-}
-
-/// Extension for Vector3 operations
-extension on Matrix4 {
-  Vector3 transform3(Vector3 vector) {
-    final x = vector.x;
-    final y = vector.y;
-    final z = vector.z;
-
-    return Vector3(
-      entry(0, 0) * x + entry(0, 1) * y + entry(0, 2) * z + entry(0, 3),
-      entry(1, 0) * x + entry(1, 1) * y + entry(1, 2) * z + entry(1, 3),
-      entry(2, 0) * x + entry(2, 1) * y + entry(2, 2) * z + entry(2, 3),
-    );
-  }
-}
-
-/// Simple 3D vector class
-class Vector3 {
-  final double x;
-  final double y;
-  final double z;
-
-  const Vector3(this.x, this.y, this.z);
 }
