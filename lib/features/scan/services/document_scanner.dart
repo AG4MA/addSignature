@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 import 'dart:typed_data';
-import 'dart:ui' as ui;
+import 'dart:ui';
 
 import 'package:image/image.dart' as img;
 
