@@ -267,7 +267,7 @@ class _SignatureCreatorScreenState
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Signature saved')),
             );
-            context.pop();
+            context.pop(signature); // Return the created signature
           }
         },
         failure: (message, error) {

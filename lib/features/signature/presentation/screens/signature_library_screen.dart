@@ -142,8 +142,21 @@ class _SignatureLibraryScreenState
       body: _buildBody(),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
-          await context.push('/signature-creator');
+          final uri = GoRouterState.of(context).uri;
+          final documentPath = uri.queryParameters['documentPath'];
+          
+          // After creating signature, come back here with the same document
+          final result = await context.push<SignatureModel>('/signature-creator');
           await _loadSignatures();
+          
+          // If a signature was created and we're in select mode, use it automatically
+          if (result != null && widget.selectMode && documentPath != null) {
+            if (mounted) {
+              context.pushReplacement(
+                '/editor?documentPath=$documentPath&signatureId=${result.id}',
+              );
+            }
+          }
         },
         icon: const Icon(Icons.add),
         label: const Text('Create'),
